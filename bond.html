@@ -1,13 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>개인투자용 국채 만기 수령액 계산기</title>
+<meta name="description" content="개인투자용 국채 투자금과 금리, 만기를 입력해 예상 만기 수령액을 계산해 보세요.">
+<title>국채 만기 수령액 계산기 | 금융 계산기</title>
 <style>
-:root{--navy:#172554;--blue:#2563eb;--pale:#eff6ff;--ink:#172033;--muted:#64748b;--line:#e2e8f0;--bg:#f5f7fb;--white:#fff;--green:#047857}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;line-height:1.55}
-.wrap{max-width:780px;margin:0 auto;padding:24px 16px 40px}
+:root{--navy:#172554;--blue:#2563eb;--pale:#eff6ff;--ink:#172033;--muted:#64748b;--line:#e2e8f0;--bg:#f5f7fb;--green:#047857}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;line-height:1.55}
+.wrap{max-width:780px;margin:0 auto;padding:20px 16px 36px}
+nav{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+nav a{color:#1d4ed8;text-decoration:none;font-size:14px;font-weight:700}
 header{background:linear-gradient(135deg,#172554,#2563eb);color:white;padding:26px 22px;border-radius:20px;margin-bottom:18px}
 .eyebrow{font-size:12px;letter-spacing:.08em;opacity:.85;font-weight:700}
 h1{font-size:clamp(23px,5vw,32px);line-height:1.3;margin:8px 0}
@@ -15,7 +19,8 @@ header p{margin:8px 0 0;color:#e0eaff;font-size:14px}
 .panel{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 5px 18px #0f172a08}
 h2{font-size:18px;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;font-weight:700;color:#334155}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:700;color:#334155}
 input,select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:12px 11px;font:inherit;background:#fff;color:var(--ink);min-height:46px}
 input:focus,select:focus{outline:3px solid #bfdbfe;border-color:var(--blue)}
 .hint{font-size:12px;color:var(--muted)}
@@ -28,17 +33,26 @@ input:focus,select:focus{outline:3px solid #bfdbfe;border-color:var(--blue)}
 .hero-result .label{font-size:13px;color:#1e40af;font-weight:700}
 .big{font-size:clamp(27px,6vw,36px);font-weight:850;color:#1d4ed8;letter-spacing:-.03em;overflow-wrap:anywhere}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{border:1px solid var(--line);border-radius:12px;padding:13px}.stat .k{font-size:12px;color:var(--muted)}.stat .v{font-size:18px;font-weight:800;margin-top:4px;overflow-wrap:anywhere}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:11px 7px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:12px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:13px}
+.stat .k{font-size:12px;color:var(--muted)}.stat .v{font-size:18px;font-weight:800;margin-top:4px;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:11px 7px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-size:12px}
 .note{font-size:12px;color:var(--muted);margin:10px 0 0}
 .warn{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:13px;border-radius:12px;font-size:13px}
-.actions{display:flex;gap:8px;margin-top:12px}.secondary{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-weight:700;cursor:pointer}
+.actions{display:flex;gap:8px;margin-top:12px}
+.secondary{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-weight:700;cursor:pointer}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 @media(max-width:520px){.grid{grid-template-columns:1fr}.panel{padding:16px}.stats{grid-template-columns:1fr 1fr}.wrap{padding:16px 12px 30px}}
 </style>
 </head>
 <body>
 <div class="wrap">
+<nav aria-label="사이트 메뉴">
+<a href="./index.html">← 금융 계산기 홈</a>
+<a href="./guide.html">이용 가이드</a>
+</nav>
 <header>
 <div class="eyebrow">FINANCE CALCULATOR</div>
 <h1>개인투자용 국채<br>만기 수령액 계산기</h1>
@@ -50,7 +64,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 <div class="grid">
 <div class="field">
 <label for="principal">투자 금액 (원)</label>
-<input id="principal" type="number" min="100000" step="100000" value="5000000">
+<input id="principal" type="number" min="100000" step="100000" value="5000000" inputmode="numeric">
 <div class="quick">
 <button type="button" data-amount="1000000">100만원</button>
 <button type="button" data-amount="5000000">500만원</button>
@@ -62,7 +76,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 <select id="term">
 <option value="3">3년물</option><option value="5">5년물</option><option value="10" selected>10년물</option><option value="20">20년물</option>
 </select>
-<div class="hint">실제 발행되는 종목·조건을 확인하세요.</div>
+<div class="hint">실제 발행되는 종목과 조건을 확인하세요.</div>
 </div>
 <div class="field">
 <label for="coupon">표면금리 (%/년)</label>
@@ -75,12 +89,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 <div class="field">
 <label for="tax">적용 세율 (%)</label>
 <input id="tax" type="number" min="0" max="100" step="0.1" value="15.4">
-<div class="hint">예시 기본값 15.4%. 실제 적용 세율 확인 필요</div>
+<div class="hint">예시 기본값이며 실제 세율은 상품·개인 조건에 따라 달라질 수 있습니다.</div>
 </div>
 <div class="field">
 <label for="years">계산 기간 (년)</label>
 <input id="years" type="number" min="1" max="50" step="1" value="10">
-<div class="hint">선택한 만기에 맞춰 자동 변경됩니다.</div>
+<div class="hint">만기를 선택하면 계산 기간도 함께 변경됩니다.</div>
 </div>
 </div>
 <button class="primary" id="calculate" type="button">만기 수령액 계산하기</button>
@@ -103,7 +117,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 <table>
 <thead><tr><th>항목</th><th>예상 금액</th></tr></thead>
 <tbody>
-<tr><td>적용 연복리 금리</td><td id="rateOut">-</td></tr>
+<tr><td>가정한 연복리 금리</td><td id="rateOut">-</td></tr>
 <tr><td>세전 만기 금액</td><td id="grossOut">-</td></tr>
 <tr><td>세후 만기 수령액</td><td id="netOut">-</td></tr>
 <tr><td>원금 대비 세후 수익률</td><td id="returnOut">-</td></tr>
@@ -114,58 +128,92 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
 <button class="secondary" id="copy" type="button">결과 복사</button>
 <button class="secondary" id="reset" type="button">초기화</button>
 </div>
-<p class="note" id="copyStatus"></p>
+<p class="note" id="copyStatus" role="status"></p>
 </section>
 
 <section class="panel">
 <h2>계산 전 꼭 확인하세요</h2>
-<div class="warn">이 계산기는 입력한 표면금리와 가산금리를 합산해 연복리로 계산하는 참고용 추정치입니다. 실제 발행분의 적용 금리, 매입·만기일, 일수 계산, 세금 및 제도에 따라 실제 수령액은 달라질 수 있습니다. 공식 청약·발행 안내와 판매대행기관의 만기 예상액을 반드시 확인하세요.</div>
-<p class="note">개인투자용 국채는 만기 보유 시 원금과 이자를 만기에 일괄 지급하는 구조이며, 중도환매 시 만기 보유와 다른 이자·세제 조건이 적용될 수 있습니다. 본 도구는 중도환매 계산기가 아닙니다.</p>
+<div class="warn">이 계산기는 입력한 표면금리와 가산금리를 합산해 연복리로 계산하는 단순 참고용 추정치입니다. 실제 개인투자용 국채의 지급 구조, 적용 금리, 세금, 발행 조건과 계산 방식은 이 가정과 다를 수 있습니다. 실제 청약 전에는 공식 발행 안내와 판매대행기관의 만기 예상액을 확인하세요.</div>
+<p class="note">중도환매 시에는 만기 보유와 다른 이자·세제 조건이 적용될 수 있습니다. 본 도구는 중도환매 계산기가 아닙니다.</p>
 </section>
 <footer>개인투자용 국채 예상 수령액 계산기 · 투자 판단 전 공식 조건 확인</footer>
 </div>
 <script>
+'use strict';
 const $ = id => document.getElementById(id);
 const won = n => Math.round(n).toLocaleString('ko-KR') + '원';
 const pct = n => n.toLocaleString('ko-KR',{maximumFractionDigits:3}) + '%';
 
 function calculate(){
   const principal = Number($('principal').value);
-  const term = Number($('term').value);
   const coupon = Number($('coupon').value);
   const bonus = Number($('bonus').value);
   const taxRate = Number($('tax').value);
   const years = Number($('years').value);
-  if(!Number.isFinite(principal)||principal<100000){alert('투자 금액은 10만원 이상 입력해 주세요.');return;}
-  if(!Number.isFinite(coupon)||coupon<0||coupon>30||!Number.isFinite(bonus)||bonus<0||bonus>10){alert('금리 입력값을 확인해 주세요.');return;}
-  if(!Number.isFinite(taxRate)||taxRate<0||taxRate>100||!Number.isInteger(years)||years<1||years>50){alert('세율 또는 계산 기간을 확인해 주세요.');return;}
+
+  if(!Number.isFinite(principal)||principal<100000){
+    alert('투자 금액은 10만원 이상 입력해 주세요.'); return;
+  }
+  if(!Number.isFinite(coupon)||coupon<0||coupon>30||
+     !Number.isFinite(bonus)||bonus<0||bonus>10){
+    alert('금리 입력값을 확인해 주세요.'); return;
+  }
+  if(!Number.isFinite(taxRate)||taxRate<0||taxRate>100||
+     !Number.isInteger(years)||years<1||years>50){
+    alert('세율 또는 계산 기간을 확인해 주세요.'); return;
+  }
+
   const rate=(coupon+bonus)/100;
-  const gross=principal*Math.pow(1+rate,years)-principal;
-  const tax=gross*taxRate/100;
-  const net=principal+gross-tax;
-  const profit=gross-tax;
+  const grossInterest=principal*(Math.pow(1+rate,years)-1);
+  const tax=grossInterest*taxRate/100;
+  const net=principal+grossInterest-tax;
+  const profit=grossInterest-tax;
+
   $('net').textContent=won(net);
-  $('summary').textContent=`${years}년 보유 가정 · 표면금리 ${pct(coupon)} + 가산금리 ${pct(bonus)}`;
+  $('summary').textContent=`${years}년 보유 가정 · 입력 금리 ${pct(coupon)} + ${pct(bonus)}`;
   $('outPrincipal').textContent=won(principal);
-  $('grossInterest').textContent=won(gross);
+  $('grossInterest').textContent=won(grossInterest);
   $('taxAmount').textContent=won(tax);
   $('profit').textContent=won(profit);
   $('rateOut').textContent=pct(coupon+bonus);
-  $('grossOut').textContent=won(principal+gross);
+  $('grossOut').textContent=won(principal+grossInterest);
   $('netOut').textContent=won(net);
   $('returnOut').textContent=pct((profit/principal)*100);
   $('results').classList.add('show');
   $('copyStatus').textContent='';
   $('results').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
 $('calculate').addEventListener('click',calculate);
-document.querySelectorAll('[data-amount]').forEach(btn=>btn.addEventListener('click',()=>{$('principal').value=btn.dataset.amount;}));
+document.querySelectorAll('[data-amount]').forEach(btn=>{
+  btn.addEventListener('click',()=>{$('principal').value=btn.dataset.amount;});
+});
 $('term').addEventListener('change',()=>{$('years').value=$('term').value;});
-$('reset').addEventListener('click',()=>{$('principal').value=5000000;$('term').value='10';$('coupon').value=3.5;$('bonus').value=0.3;$('tax').value=15.4;$('years').value=10;$('results').classList.remove('show');});
+$('reset').addEventListener('click',()=>{
+  $('principal').value=5000000;
+  $('term').value='10';
+  $('coupon').value=3.5;
+  $('bonus').value=0.3;
+  $('tax').value=15.4;
+  $('years').value=10;
+  $('results').classList.remove('show');
+  $('copyStatus').textContent='';
+});
 $('copy').addEventListener('click',async()=>{
- const text=`개인투자용 국채 예상 계산 결과\n투자금: ${$('outPrincipal').textContent}\n만기: ${$('years').value}년\n적용금리: ${$('rateOut').textContent}\n세전 이자: ${$('grossInterest').textContent}\n예상 세금: ${$('taxAmount').textContent}\n세후 만기 수령액: ${$('netOut').textContent}\n※ 입력값 기반 참고용 추정치입니다.`;
- try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='계산 결과를 복사했습니다.';}
- catch(e){$('copyStatus').textContent=text;}
+  const resultText=`개인투자용 국채 예상 계산 결과
+투자금: ${$('outPrincipal').textContent}
+만기: ${$('years').value}년
+가정 금리: ${$('rateOut').textContent}
+세전 이자: ${$('grossInterest').textContent}
+예상 세금: ${$('taxAmount').textContent}
+세후 만기 수령액: ${$('netOut').textContent}
+※ 입력값 기반 참고용 추정치입니다.`;
+  try{
+    await navigator.clipboard.writeText(resultText);
+    $('copyStatus').textContent='계산 결과를 복사했습니다.';
+  }catch(e){
+    $('copyStatus').textContent=resultText;
+  }
 });
 calculate();
 </script>
